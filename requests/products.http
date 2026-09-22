@@ -1,0 +1,41 @@
+### 서버 조회
+GET http://localhost:3000
+
+### 상품 목록 조회
+# @name products
+GET http://localhost:3000/api/products
+
+### 상품 목록 조회 - 쿼리 스트링
+GET http://localhost:3000/api/products?page=1&pageSize=10&orderBy=recent&keyword=아이폰
+
+### 상품 상세 조회
+GET http://localhost:3000/api/products/{{products.list[0].id}}
+
+### 상품 등록
+# @name created
+POST http://localhost:3000/api/products
+Content-Type: application/json
+{
+  "name": "상품",
+  "description": "상품 설명입니다. 공백 제외하고 10글자 이상 적어야 해요.",
+  "price": 0,
+  "tags": [
+    "태그"
+  ]
+}
+
+### 상품 수정
+PATCH http://localhost:3000/api/products/{{created._id}}
+Content-Type: application/json
+{
+  "name": "상품 수정",
+  "description": "설명 수정입니다. 공백 제외하고 10글자 이상 적어야 해요.",
+  "price": 50000,
+  "tags": [
+    "태그수정1",
+    "태그수정2"
+  ]
+}
+
+### 상품 삭제
+DELETE http://localhost:3000/api/products/{{created._id}}
