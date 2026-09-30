@@ -1,0 +1,29 @@
+//createProduct
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+    "images": ["http://example.com","http://example.com"],
+    "name": "ㅗ",
+    "description": "테스트 설명",
+    "price": 1454645,
+    "tags": ["테스트", "상품", "간지나는거임ㅅㄱ"]
+}
+
+//loadOneProduct
+GET http://localhost:3000/api/products/6ab3630166076bed515e6f17
+//loadProductList
+GET http://localhost:3000/api/products/
+//editProduct
+PATCH http://localhost:3000/api/products/6ab3630166076bed515e6f17
+Content-Type: application/json
+
+{
+    "images": ["http://example.com","http://example.com"],
+    "name": "아오아오아ㅇㄴㄹㄹ",
+    "description": "테스트 ㄷㄷ명",
+    "price": 14,
+    "tags": ["테스트", "상품", "간지나는거임ㅅㄱ"]
+}
+//removeProduct
+DELETE http://localhost:3000/api/products/6ab3630166076bed515e6f17
