@@ -51,8 +51,7 @@ app.get('/api/products', async (req, res) => {
     list.push({
       id: filtered[i].id,
       name: filtered[i].name,
-      price: filtered[i].price,
-      createdAt: filtered[i].createdAt
+      price: filtered[i].price
     });
   }
 
@@ -78,8 +77,7 @@ app.get('/api/products/:id', async (req, res) => {
     name: product.name,
     description: product.description,
     price: product.price,
-    tags: product.tags,
-    createdAt: product.createdAt
+    tags: product.tags
   }
 
   res.send(response);
@@ -106,10 +104,7 @@ app.patch('/api/products/:id', async (req, res) => {
     return;
   };
 
-  const product = await Product.findByIdAndUpdate(req.params.id, {
-    ...req.body,
-    updatedAt: new Date()
-  }, {
+  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     returnDocument: 'after',
   });
 
