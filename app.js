@@ -19,44 +19,38 @@ app.get('/', (req, res) => {
 
 // 상품 목록 조회
 app.get('/api/products', async (req, res) => {
-  const products = await Product.find();
-  
+  // 쿼리 구조분해 및 기본값 설정
   const {
     page = 1,
     pageSize = 10,
     orderBy = 'recent',
     keyword = ''
   } = req.query;
+
+  // 페이네이션 설정
+  const regex = new RegExp(keyword, 'i');
+  const filter = {
+    $or:
+      [
+        {name: {$regex: regex}},
+        {description: {$regex: regex}}
+      ]
+    };
+  const sortOption = {
+    recent: {createdAt: 'desc'}
+  };
+  const offset = (page * pageSize) - pageSize;
+
+  // 요청 응답값 설정
+  const products = await Product.find(filter)
+    .sort(sortOption[orderBy])
+    .skip(offset)
+    .limit(pageSize);
   
-  // 키워드 필터 + 최신순 정렬
-  const filtered = [];
-
-  if (!keyword.trim()) {
-    filtered.push(...products.reverse());
-  } else {
-    const results = products.filter(one => 
-      one.name.includes(keyword) || one.description.includes(keyword)
-    );
-    filtered.push(...results.reverse());
-  }
-
-  // 페이지네이션
-  const list = [];
-  const totalCount = filtered.length;
-
-  const startIndex = (page * pageSize) - pageSize;
-  const endIndex = page * pageSize;
-
-  for (let i = startIndex; i < endIndex && i < totalCount; i++){
-    list.push({
-      id: filtered[i].id,
-      name: filtered[i].name,
-      price: filtered[i].price
-    });
-  }
+  const totalCount = await Product.countDocuments({});
 
   const response = {
-    list: list,
+    list: products,
     totalCount: totalCount
   }
 
