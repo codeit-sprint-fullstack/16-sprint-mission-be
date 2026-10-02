@@ -1,8 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import Product from './models/Product.js';
-import { validateQuery } from './utils/validate.js';
+import postsRouter from './routes/products.js';
 
 const app = express();
 
@@ -17,106 +16,7 @@ app.get('/', (req, res) => {
   res.send('판다마켓 서버가 실행 중입니다.');
 });
 
-// 상품 목록 조회
-app.get('/api/products', async (req, res) => {
-  // 쿼리 검증
-  const {
-    page,
-    pageSize,
-    orderBy,
-    keyword
-  } = validateQuery(req.query);
-
-  // 페이네이션 설정
-  const regex = new RegExp(keyword, 'i');
-  const filter = {
-    $or:
-      [
-        {name: {$regex: regex}},
-        {description: {$regex: regex}}
-      ]
-    };
-  const sortOption = {
-    recent: {createdAt: 'desc'}
-  };
-  const offset = (page * pageSize) - pageSize;
-
-  // 요청 응답값 설정
-  const products = await Product.find(filter)
-    .sort(sortOption[orderBy])
-    .skip(offset)
-    .limit(pageSize);
-  
-  const totalCount = await Product.countDocuments({});
-
-  const list = products.map(product => ({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    createdAt: product.createdAt
-  }))
-
-  const response = {
-    list: list,
-    totalCount: totalCount
-  }
-
-  res.send(response);
-});
-
-// 상품 상세 조회
-app.get('/api/products/:id', async (req, res) => {
-  const product = await Product.findById(req.params.id);
-
-  if (!product) {
-    res.status(404).json({message: '상품을 찾을 수 없습니다.'});
-    return;
-  }
-
-  const response = {
-    id: product.id,
-    name: product.name,
-    description: product.description,
-    price: product.price,
-    tags: product.tags
-  }
-
-  res.send(response);
-});
-
-// 상품 등록
-app.post('/api/products', async (req, res) => {
-  const response = await Product.create(req.body);
-
-  res.status(201).json(response);
-});
-
-// 상품 수정
-app.patch('/api/products/:id', async (req, res) => {
-  const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    returnDocument: 'after',
-    runValidators: true
-  });
-
-  if (!product) {
-    res.status(404).json({message: '상품을 찾을 수 없습니다.'});
-    return;
-  }
-
-  res.json(product);
-});
-
-// 상품 삭제
-app.delete('/api/products/:id', async (req, res) => {
-  const deleted = await Product.findByIdAndDelete(req.params.id);
-
-  if (!deleted) {
-    res.status(404).json({message: '상품을 찾을 수 없습니다.'});
-    return;
-  }
-
-  res.json(deleted);
-});
+app.use('/api/products', postsRouter);
 
 // 에러 처리
 app.use((req, res) => {
