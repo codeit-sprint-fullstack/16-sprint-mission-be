@@ -13,8 +13,8 @@ export const validateQuery = ({
     return true;
   };
   
-  if (isWholeNumber(page)) page = 1;
-  if (isWholeNumber(pageSize)) pageSize = 10;
+  if (!isWholeNumber(page)) page = 1;
+  if (!isWholeNumber(pageSize)) pageSize = 10;
   if (pageSize > 100) pageSize = 100;
   
   // orderBy recent로 고정
