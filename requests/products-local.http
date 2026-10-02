@@ -6,7 +6,7 @@ GET http://localhost:3000
 GET http://localhost:3000/api/products
 
 ### 상품 목록 조회 - 쿼리 스트링
-GET http://localhost:3000/api/products?page=1&pageSize=10&orderBy=recent&keyword=아이폰
+GET http://localhost:3000/api/products?page=asdasd1&pageSize=10000sd&orderBy=recent&keyword=아이폰
 
 ### 상품 상세 조회
 GET http://localhost:3000/api/products/{{products.list[0].id}}
@@ -17,25 +17,26 @@ POST http://localhost:3000/api/products
 Content-Type: application/json
 {
   "name": "상품",
-  "description": "상품 설명입니다. 공백 제외하고 10글자 이상 적어야 해요.",
+  "description": "상품 설명입니다. 앞뒤 공백 제외하고 10글자 이상 적어야 해요.",
   "price": 0,
   "tags": [
-    "태그"
+    "태그1",
+    "태그2"
   ]
 }
 
 ### 상품 수정
-PATCH http://localhost:3000/api/products/{{created._id}}
+PATCH http://localhost:3000/api/products/{{created.id}}
 Content-Type: application/json
 {
   "name": "상품 수정",
-  "description": "설명 수정입니다. 공백 제외하고 10글자 이상 적어야 해요.",
-  "price": 50000,
+  "description": "상품 설명 수정입니다. 앞뒤 공백 제외하고 10글자 이상 적어야 해요.",
+  "price": 10000,
   "tags": [
-    "태그수정1",
-    "태그수정2"
+    "태그1수정",
+    "태그2수정"
   ]
 }
 
 ### 상품 삭제
-DELETE http://localhost:3000/api/products/{{created._id}}
+DELETE http://localhost:3000/api/products/{{created.id}}
