@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import Product from './models/Product.js';
-import { validate } from './utils/validate.js';
+import { validateQuery, validate } from './utils/validate.js';
 
 const app = express();
 
@@ -19,13 +19,13 @@ app.get('/', (req, res) => {
 
 // 상품 목록 조회
 app.get('/api/products', async (req, res) => {
-  // 쿼리 구조분해 및 기본값 설정
+  // 쿼리 검증
   const {
-    page = 1,
-    pageSize = 10,
-    orderBy = 'recent',
-    keyword = ''
-  } = req.query;
+    page,
+    pageSize,
+    orderBy,
+    keyword
+  } = validateQuery(req.query);
 
   // 페이네이션 설정
   const regex = new RegExp(keyword, 'i');
