@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import Product from './models/Product.js';
-import { validateQuery, validate } from './utils/validate.js';
+import { validateQuery } from './utils/validate.js';
 
 const app = express();
 
@@ -86,12 +86,6 @@ app.get('/api/products/:id', async (req, res) => {
 
 // 상품 등록
 app.post('/api/products', async (req, res) => {
-  const result = validate(req.body);
-  if (!result) {
-    res.status(400).json({message: '상품 등록에 실패했습니다.'});
-    return;
-  };
-
   const response = await Product.create(req.body);
 
   res.status(201).json(response);
@@ -126,12 +120,27 @@ app.delete('/api/products/:id', async (req, res) => {
 
 // 에러 처리
 app.use((req, res) => {
-  res.status(404).json({mesagge: '해당 주소를 찾을 수 없습니다.'});
+  res.status(404).json({message: '해당 주소를 찾을 수 없습니다.'});
 });
 
 app.use((err, req, res, next) => {
   if (err.name === 'CastError') {
-    res.status(404).json({message: '상품을 찾을 수 없습니다.'});
+    res.status(400).json({message: '잘못된 상품 ID 형식입니다.'});
+    return;
+  }
+
+  // 스키마 유효성 오류 처리
+  if (err.name === 'ValidationError') {
+    const field = Object.keys(err.errors)[0];
+    const invalidValue = err.errors[field].value;
+
+    // 판매 가격이 문자열로 입력됐을 때
+    if (field === 'price' && typeof invalidValue === 'string') {
+      res.status(400).json({message: '판매 가격 입력은 숫자로 입력해주세요.'});
+      return;
+    }
+
+    res.status(400).json({message: err.errors[field].message});
     return;
   }
 
