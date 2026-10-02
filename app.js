@@ -92,14 +92,9 @@ app.post('/api/products', async (req, res) => {
 
 // 상품 수정
 app.patch('/api/products/:id', async (req, res) => {
-  const result = validate(req.body);
-  if (!result) {
-    res.status(400).json({message: '상품 수정에 실패했습니다.'});
-    return;
-  };
-
   const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
     returnDocument: 'after',
+    runValidators: true
   });
 
   if (!product) {
