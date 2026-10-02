@@ -49,8 +49,15 @@ app.get('/api/products', async (req, res) => {
   
   const totalCount = await Product.countDocuments({});
 
+  const list = products.map(product => ({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    createdAt: product.createdAt
+  }))
+
   const response = {
-    list: products,
+    list: list,
     totalCount: totalCount
   }
 
