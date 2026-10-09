@@ -1,0 +1,23 @@
+//createComment
+POST http://localhost:3000/api/comments/products
+Content-Type: application/json
+
+{
+    "content": "오백만원만 할인해주세요 ㅠㅠ",
+    "productId" : 1
+}
+
+//loadComments
+GET http://localhost:3000/api/comments/products?productId=1&limit=10&cursor=5 
+
+
+//editComment
+PATCH http://localhost:3000/api/comments/products/8
+Content-Type: application/json
+
+{
+    "content" : "저 주세요"
+}
+
+//removeProduct
+DELETE http://localhost:3000/api/comments/products/2

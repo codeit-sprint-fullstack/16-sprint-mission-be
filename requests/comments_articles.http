@@ -1,0 +1,23 @@
+//createComment
+POST http://localhost:3000/api/comments/articles
+Content-Type: application/json
+
+{
+    "content": "쫀쫀이 쫀ㅇㄴㅁㄹㅇㄴ쫀",
+    "articleId" : 1
+}
+
+//loadComments
+GET http://localhost:3000/api/comments/articles?articleId=1&limit=4&cursor=12
+
+
+//editComment
+PATCH http://localhost:3000/api/comments/articles/1
+Content-Type: application/json
+
+{
+    "content" : "초"
+}
+
+//removeProduct
+DELETE http://localhost:3000/api/comments/articles/2
