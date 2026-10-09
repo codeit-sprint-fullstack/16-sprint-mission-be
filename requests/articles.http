@@ -1,0 +1,25 @@
+//createProduct
+POST http://localhost:3000/api/articles
+Content-Type: application/json
+
+{
+    "title": "아리아리 동동",
+    "content" : "나와랏"
+}
+
+//loadOneProduct
+GET http://localhost:3000/api/articles/2
+//loadProductList
+GET http://localhost:3000/api/articles/
+GET http://localhost:3000/api/articles?page=1&pageSize=50
+//editProduct
+PATCH http://localhost:3000/api/articles/1
+Content-Type: application/json
+
+{
+    "title": "에잇!",
+    "content" : "나와랏"
+}
+
+//removeProduct
+DELETE http://localhost:3000/api/articles/3

@@ -4,18 +4,19 @@ Content-Type: application/json
 
 {
     "images": ["http://example.com","http://example.com"],
-    "name": "ㅗ",
-    "description": "테스트 설명",
-    "price": 1454645,
-    "tags": ["테스트", "상품", "간지나는거임ㅅㄱ"]
+    "name": "100번째 상품",
+    "description": "축하합니다! 판다마켓의 역사에 기록된 100번째 상품입니다.",
+    "price": 100,
+    "tags": ["테스트", "상품"]
 }
 
 //loadOneProduct
-GET http://localhost:3000/api/products/6ab3630166076bed515e6f17
+GET http://localhost:3000/api/products/1
 //loadProductList
 GET http://localhost:3000/api/products/
+GET http://localhost:3000/api/products?page=1&pageSize=100&orderBy=recent
 //editProduct
-PATCH http://localhost:3000/api/products/6ab3630166076bed515e6f17
+PATCH http://localhost:3000/api/products/82
 Content-Type: application/json
 
 {
@@ -26,4 +27,4 @@ Content-Type: application/json
     "tags": ["테스트", "상품", "간지나는거임ㅅㄱ"]
 }
 //removeProduct
-DELETE http://localhost:3000/api/products/6ab3630166076bed515e6f17
+DELETE http://localhost:3000/api/products/3

@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(50)
+  description   String
+  tags          String[]
+  images        String[]
+  ownerId       Int      @default(0) @map("owner_id")
+  favoriteCount Int      @default(0) @map("favorite_count")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt     DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  price         Int      @default(0)
+
+  @@map("products")
+}
+
+model Article {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("articles")
+}
+//게시글의 댓글
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  articleId Int      @map("article_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments")
+}
+//제품의 댓글
+model CommentProduct {
+  id        Int      @id @default(autoincrement())
+  content   String
+  productId Int      @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("comments_product")
+}

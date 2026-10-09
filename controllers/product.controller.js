@@ -1,5 +1,5 @@
 //import { items } from '../data/testdata.js';
-import Product from '../models/product.model.js';
+import { prisma } from '../db.js';
 //상품 등록
 export const createProduct = async (req, res) => {
     try {
@@ -12,12 +12,14 @@ export const createProduct = async (req, res) => {
                 message: "이름이랑 가격은 필수로 입력해주십시오"
             });
         }
-        const product = await Product.create({
-            images,
-            name,
-            description,
-            price,
-            tags
+        const product = await prisma.product.create({
+            data: {
+                images,
+                name,
+                description,
+                price,
+                tags
+            }
         });
 
         res.status(201).json(product);
@@ -33,7 +35,11 @@ export const createProduct = async (req, res) => {
 //1개 조회
 export const loadOneProduct = async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await prisma.product.findUnique({
+            where : {
+                id : Number(req.params.id)
+            }
+        });
 
         console.log("상품 아이디 ", req.params.id);
 
@@ -55,8 +61,6 @@ export const loadOneProduct = async (req, res) => {
 // 여러 개 조회
 export const loadProductList = async (req, res) => {
     try {
-        const productList = await Product.find();
-
         let { page, pageSize, orderBy, keyword } = req.query;
 
         page = Number(page) || 1;
@@ -66,40 +70,40 @@ export const loadProductList = async (req, res) => {
             orderBy = "recent";
         }
 
-        
-        let filteredList = productList;
+        const where = keyword
+            ? {
+                  OR: [
+                      {
+                          name: {
+                              contains: keyword
+                          }
+                      },
+                      {
+                          description: {
+                              contains: keyword
+                          }
+                      }
+                  ]
+              }
+            : {};
 
-        if (keyword) {
-            filteredList = productList.filter((product) =>
-                product.name.includes(keyword) ||
-                product.description.includes(keyword)
-            );
-        }
+        const products = await prisma.product.findMany({
+            where,
+            orderBy:
+                orderBy === "favorite"
+                    ? { favoriteCount: "desc" }
+                    : { createdAt: "desc" },
+            skip: (page - 1) * pageSize,
+            take: pageSize
+        });
 
-        // 정렬
-        if (orderBy === "favorite") {
-            filteredList.sort(
-                (a, b) => b.favoriteCount - a.favoriteCount
-            );
-        }
-        else if (orderBy === "recent") {
-            filteredList.sort(
-                (a, b) => b.createdAt - a.createdAt
-            );
-        }
-
-        // 검색 결과 전체 개수
-        const totalCount = await Product.countDocuments();
-
-        // 페이지네이션
-        const start = (page - 1) * pageSize;
-        const end = start + pageSize;
-
-        const result = filteredList.slice(start, end);
+        const totalCount = await prisma.product.count({
+            where
+        });
 
         return res.json({
-            list: result,
-            totalCount: totalCount
+            list: products,
+            totalCount
         });
 
     } catch (error) {
@@ -113,35 +117,37 @@ export const loadProductList = async (req, res) => {
 //상품 수정
 export const editProduct = async (req, res) => {
     try {
-        const product = await Product.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            {
-                new: true,
-                runValidators: true
-            }
+        const product = await prisma.product.update({
+            where: {
+                id: Number(req.params.id)
+            },
+            data: req.body
+        });
 
-        );
+        return res.json(product);
 
-        if (!product) {
+    } catch (error) {
+        console.log("editProduct 에러 :", error);
+
+        if (error.code === 'P2025') {
             return res.status(404).json({
-                message: "존재하지 않는 상품입비나."
+                message: "존재하지 않는 상품입니다."
             });
         }
 
-        return res.json(product);
-    } catch (error) {
-        console.log("editProduct 에러 :", error);
         return res.status(500).json({
-            message : "상품 수정 실패"
-        })
+            message: "상품 수정 실패"
+        });
     }
-    
-}
+};
 //상품 삭제
-export const removeProduct = async(req, res) => {
-     try {
-        const product = await Product.findByIdAndDelete(req.params.id);
+export const removeProduct = async (req, res) => {
+    try {
+        const product = await prisma.product.delete({
+            where: {
+                id : Number(req.params.id)
+            }
+        })
 
         console.log("상품 아이디 ", req.params.id);
 
