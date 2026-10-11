@@ -1,0 +1,22 @@
+### 상품 등록 테스트
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "기계식 키보드",
+  "description": "사용 기간 3개월",
+  "price": 50000,
+  "tags": ["키보드", "전자기기"]
+}
+
+### 상품 가격 수정
+PATCH http://localhost:3000/products/1
+Content-Type: application/json
+
+{
+  "price": 45000
+}
+
+
+### 상품 삭제
+DELETE http://localhost:3000/products/1
