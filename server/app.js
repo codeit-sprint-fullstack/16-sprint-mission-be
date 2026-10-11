@@ -339,6 +339,161 @@ app.get("/articles", async (req, res) => {
   }
 });
 
+//게시글 등록
+app.post("/articles", async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    if (
+      typeof title !== "string" ||
+      !title.trim() ||
+      typeof content !== "string" ||
+      !content.trim()
+    ) {
+      return res.status(400).json({
+        message: "제목과 내용을 올바르게 입력해주세요.",
+      });
+    }
+
+    const article = await prisma.article.create({
+      data: {
+        title,
+        content,
+      },
+    });
+
+    res.status(201).json(article);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "게시글 등록 중 오류가 발생했습니다.",
+    });
+  }
+});
+
+//게시물 상세 조회
+app.get('/articles/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: '올바르지 않은 게시글 ID입니다.',
+      });
+    }
+
+    const article = await prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!article) {
+      return res.status(404).json({
+        message: '게시글을 찾을 수 없습니다.',
+      });
+    }
+
+    res.status(200).json(article);
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: '게시글 조회 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+//게시물 수정
+
+app.patch('/articles/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: '올바르지 않은 게시글 ID입니다.',
+      });
+    }
+
+    const { title, content } = req.body ?? {};
+
+    if (
+      (title !== undefined &&
+        (typeof title !== 'string' || !title.trim())) ||
+      (content !== undefined &&
+        (typeof content !== 'string' || !content.trim()))
+    ) {
+      return res.status(400).json({
+        message: '게시글 정보를 확인해주세요.',
+      });
+    }
+
+    const data = {};
+
+    if (title !== undefined) data.title = title;
+    if (content !== undefined) data.content = content;
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({
+        message: '수정할 게시글 정보를 입력해주세요.',
+      });
+    }
+
+    const article = await prisma.article.update({
+      where: { id },
+      data,
+    });
+
+    res.status(200).json(article);
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({
+        message: '게시글을 찾을 수 없습니다.',
+      });
+    }
+
+    console.error(error);
+
+    res.status(500).json({
+      message: '게시글 수정 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+//게시물 삭제
+app.delete('/articles/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: '올바르지 않은 게시글 ID입니다.',
+      });
+    }
+
+    await prisma.article.delete({
+      where: { id },
+    });
+
+    res.status(200).json({
+      message: '게시글이 삭제되었습니다.',
+    });
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({
+        message: '게시글을 찾을 수 없습니다.',
+      });
+    }
+
+    console.error(error);
+
+    res.status(500).json({
+      message: '게시글 삭제 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+
 app.listen(PORT, () => {
   console.log(`서버가${PORT}번 포트에서 기다리고 있어요.`);
 });
