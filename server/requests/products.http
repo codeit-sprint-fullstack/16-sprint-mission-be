@@ -60,3 +60,76 @@ Content-Type: application/json
 
 ### 게시글 삭제
 DELETE http://localhost:3000/articles/1
+
+
+### 상품 댓글 등록
+POST http://localhost:3000/products/1/comments
+Content-Type: application/json
+
+{
+  "content": "아직 판매 중인가요?"
+}
+
+### 존재하지 않는 상품에 댓글 등록
+POST http://localhost:3000/products/99999/comments
+Content-Type: application/json
+
+{
+  "content": "구매 가능한가요?"
+}
+
+### 내용이 없는 댓글 등록
+POST http://localhost:3000/products/1/comments
+Content-Type: application/json
+
+{
+  "content": ""
+}
+
+
+### 상품 댓글 첫 페이지
+GET http://localhost:3000/products/1/comments?limit=2
+
+### 상품 댓글 다음 페이지
+GET http://localhost:3000/products/1/comments?limit=2&cursor=4
+
+### 존재하지 않는 상품의 댓글 조회
+GET http://localhost:3000/products/99999/comments
+
+### 잘못된 커서
+GET http://localhost:3000/products/1/comments?cursor=abc
+
+
+### 상품 댓글 수정
+PATCH http://localhost:3000/products/1/comments/3
+Content-Type: application/json
+
+{
+  "content": "가격을 조금 할인해 주실 수 있나요?"
+}
+
+### 존재하지 않는 댓글 수정
+PATCH http://localhost:3000/products/1/comments/99999
+Content-Type: application/json
+
+{
+  "content": "수정 테스트"
+}
+
+### 빈 댓글 내용으로 수정
+PATCH http://localhost:3000/products/1/comments/3
+Content-Type: application/json
+
+{
+  "content": ""
+}
+
+
+### 상품 댓글 삭제
+DELETE http://localhost:3000/products/1/comments/3
+
+### 이미 삭제한 댓글 다시 삭제
+DELETE http://localhost:3000/products/1/comments/3
+
+### 잘못된 댓글 ID
+DELETE http://localhost:3000/products/1/comments/abc

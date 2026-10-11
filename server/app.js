@@ -493,6 +493,235 @@ app.delete('/articles/:id', async (req, res) => {
   }
 });
 
+//댓글 등록
+
+app.post('/products/:productId/comments', async (req, res) => {
+  try {
+    const productId = Number(req.params.productId);
+    const { content } = req.body ?? {};
+
+    if (!Number.isSafeInteger(productId) || productId <= 0) {
+      return res.status(400).json({
+        message: '올바르지 않은 상품 ID입니다.',
+      });
+    }
+
+    if (typeof content !== 'string' || !content.trim()) {
+      return res.status(400).json({
+        message: '댓글 내용을 입력해주세요.',
+      });
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: '상품을 찾을 수 없습니다.',
+      });
+    }
+
+    const comment = await prisma.productComment.create({
+      data: {
+        content,
+        product: {
+          connect: { id: productId },
+        },
+      },
+    });
+
+    res.status(201).json(comment);
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({
+        message: '상품을 찾을 수 없습니다.',
+      });
+    }
+
+    console.error(error);
+
+    res.status(500).json({
+      message: '댓글 등록 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+//댓글 목록 조회
+
+app.get('/products/:productId/comments', async (req, res) => {
+  try {
+    const productId = Number(req.params.productId);
+    const limit = Number(req.query.limit ?? 10);
+    const cursor = req.query.cursor;
+
+    if (!Number.isSafeInteger(productId) || productId <= 0) {
+      return res.status(400).json({
+        message: '올바르지 않은 상품 ID입니다.',
+      });
+    }
+
+    if (!Number.isSafeInteger(limit) || limit <= 0) {
+      return res.status(400).json({
+        message: 'limit은 1 이상의 정수여야 합니다.',
+      });
+    }
+
+    let cursorId;
+
+    if (cursor !== undefined) {
+      cursorId = Number(cursor);
+
+      if (!Number.isSafeInteger(cursorId) || cursorId <= 0) {
+        return res.status(400).json({
+          message: '올바르지 않은 커서입니다.',
+        });
+      }
+    }
+
+    const product = await prisma.product.findUnique({
+      where: { id: productId },
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: '상품을 찾을 수 없습니다.',
+      });
+    }
+
+    const comments = await prisma.productComment.findMany({
+      where: {
+        productId,
+        ...(cursorId !== undefined && {
+          id: { lt: cursorId },
+        }),
+      },
+      orderBy: { id: 'desc' },
+      take: limit + 1,
+    });
+
+    const hasNext = comments.length > limit;
+    const list = comments.slice(0, limit);
+
+    const nextCursor = hasNext
+      ? list[list.length - 1].id
+      : null;
+
+    res.status(200).json({
+      list,
+      nextCursor,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: '댓글 목록 조회 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+//댓글 수정
+
+app.patch('/products/:productId/comments/:commentId', async (req, res) => {
+  try {
+    const productId = Number(req.params.productId);
+    const commentId = Number(req.params.commentId);
+    const { content } = req.body ?? {};
+
+    if (
+      !Number.isSafeInteger(productId) ||
+      productId <= 0 ||
+      !Number.isSafeInteger(commentId) ||
+      commentId <= 0
+    ) {
+      return res.status(400).json({
+        message: '올바르지 않은 ID입니다.',
+      });
+    }
+
+    if (typeof content !== 'string' || !content.trim()) {
+      return res.status(400).json({
+        message: '댓글 내용을 올바르게 입력해주세요.',
+      });
+    }
+
+    const comment = await prisma.productComment.findFirst({
+      where: {
+        id: commentId,
+        productId,
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({
+        message: '댓글을 찾을 수 없습니다.',
+      });
+    }
+
+    const updatedComment = await prisma.productComment.update({
+      where: { id: commentId },
+      data: { content },
+    });
+
+    res.status(200).json(updatedComment);
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return res.status(404).json({
+        message: '댓글을 찾을 수 없습니다.',
+      });
+    }
+
+    console.error(error);
+
+    res.status(500).json({
+      message: '댓글 수정 중 오류가 발생했습니다.',
+    });
+  }
+});
+
+//댓글 삭제
+
+app.delete('/products/:productId/comments/:commentId', async (req, res) => {
+  try {
+    const productId = Number(req.params.productId);
+    const commentId = Number(req.params.commentId);
+
+    if (
+      !Number.isSafeInteger(productId) ||
+      productId <= 0 ||
+      !Number.isSafeInteger(commentId) ||
+      commentId <= 0
+    ) {
+      return res.status(400).json({
+        message: '올바르지 않은 ID입니다.',
+      });
+    }
+
+    const result = await prisma.productComment.deleteMany({
+      where: {
+        id: commentId,
+        productId,
+      },
+    });
+
+    if (result.count === 0) {
+      return res.status(404).json({
+        message: '댓글을 찾을 수 없습니다.',
+      });
+    }
+
+    res.status(200).json({
+      message: '댓글이 삭제되었습니다.',
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: '댓글 삭제 중 오류가 발생했습니다.',
+    });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`서버가${PORT}번 포트에서 기다리고 있어요.`);
