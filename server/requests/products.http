@@ -133,3 +133,109 @@ DELETE http://localhost:3000/products/1/comments/3
 
 ### 잘못된 댓글 ID
 DELETE http://localhost:3000/products/1/comments/abc
+
+
+### 게시글 댓글 등록
+POST http://localhost:3000/articles/1/comments
+Content-Type: application/json
+
+{
+  "content": "좋은 정보 감사합니다!"
+}
+
+### 존재하지 않는 게시글에 댓글 등록
+POST http://localhost:3000/articles/99999/comments
+Content-Type: application/json
+
+{
+  "content": "댓글 테스트"
+}
+
+### 빈 댓글 등록
+POST http://localhost:3000/articles/1/comments
+Content-Type: application/json
+
+{
+  "content": ""
+}
+
+
+### 게시글 댓글 첫 페이지
+GET http://localhost:3000/articles/1/comments?limit=2
+
+### 게시글 댓글 다음 페이지
+GET http://localhost:3000/articles/1/comments?limit=2&cursor=4
+
+### 존재하지 않는 게시글
+GET http://localhost:3000/articles/99999/comments
+
+### 잘못된 커서
+GET http://localhost:3000/articles/1/comments?cursor=abc
+
+
+### 게시글 댓글 수정
+PATCH http://localhost:3000/articles/1/comments/3
+Content-Type: application/json
+
+{
+  "content": "수정된 댓글입니다."
+}
+
+### 존재하지 않는 댓글 수정
+PATCH http://localhost:3000/articles/1/comments/99999
+Content-Type: application/json
+
+{
+  "content": "수정 테스트"
+}
+
+### 빈 댓글 내용으로 수정
+PATCH http://localhost:3000/articles/1/comments/3
+Content-Type: application/json
+
+{
+  "content": ""
+}
+
+### 잘못된 댓글 ID
+PATCH http://localhost:3000/articles/1/comments/abc
+Content-Type: application/json
+
+{
+  "content": "수정 테스트"
+}
+
+### 게시글 댓글 삭제
+DELETE http://localhost:3000/articles/1/comments/3
+
+### 삭제된 댓글 다시 삭제
+DELETE http://localhost:3000/articles/1/comments/3
+
+### 잘못된 댓글 ID
+DELETE http://localhost:3000/articles/1/comments/abc
+
+
+### Cascade 테스트용 상품 생성
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "Cascade 테스트 상품",
+  "description": "삭제 테스트용 상품입니다.",
+  "price": 1000,
+  "tags": ["test"]
+}
+
+### 테스트 상품에 댓글 등록
+POST http://localhost:3000/products/1/comments
+Content-Type: application/json
+
+{
+  "content": "Cascade 테스트 댓글입니다."
+}
+
+### 댓글 목록 확인
+GET http://localhost:3000/products/1/comments
+
+### 테스트 상품 삭제
+DELETE http://localhost:3000/products/1
