@@ -393,7 +393,12 @@ app.get('/articles/:id', async (req, res) => {
       });
     }
 
-    res.status(200).json(article);
+    res.status(200).json({
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      createdAt: article.createdAt,
+    });
   } catch (error) {
     console.error(error);
 
@@ -444,7 +449,12 @@ app.patch('/articles/:id', async (req, res) => {
       data,
     });
 
-    res.status(200).json(article);
+    res.status(200).json({
+      id: article.id,
+      title: article.title,
+      content: article.content,
+      createdAt: article.createdAt,
+    });
   } catch (error) {
     if (error.code === 'P2025') {
       return res.status(404).json({
@@ -601,7 +611,11 @@ app.get('/products/:productId/comments', async (req, res) => {
     });
 
     const hasNext = comments.length > limit;
-    const list = comments.slice(0, limit);
+    const list = comments.slice(0, limit).map((comment) => ({
+      id: comment.id,
+      content: comment.content,
+      createdAt: comment.createdAt,
+    }));
 
     const nextCursor = hasNext
       ? list[list.length - 1].id
@@ -830,7 +844,11 @@ app.get('/articles/:articleId/comments', async (req, res) => {
     });
 
     const hasNext = comments.length > limit;
-    const list = comments.slice(0, limit);
+    const list = comments.slice(0, limit).map((comment) => ({
+      id: comment.id,
+      content: comment.content,
+      createdAt: comment.createdAt,
+    }));
 
     const nextCursor = hasNext
       ? list[list.length - 1].id
