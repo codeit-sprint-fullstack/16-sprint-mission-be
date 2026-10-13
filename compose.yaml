@@ -1,0 +1,16 @@
+# ~/instagram-api/compose.yaml
+services:
+  db:
+    image: postgres:18
+    container_name: panda-market-db
+    ports:
+      - '5435:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: panda
+    volumes:
+      - panda-market-data:/var/lib/postgresql
+
+volumes:
+  panda-market-data:
