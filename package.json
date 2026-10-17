@@ -22,8 +22,12 @@
   },
   "homepage": "https://github.com/kj37kang/16-sprint-mission-be#readme",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "mongoose": "^9.10.2"
+    "mongoose": "^9.10.2",
+    "prisma": "^7.10.0",
+    "zod": "^4.6.7"
   }
 }
