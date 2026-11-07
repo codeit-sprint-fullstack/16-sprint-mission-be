@@ -19,6 +19,7 @@ async function main() {
   }
 
   const articles = [];
+  const articleLikeCounts = [10, 30, 20, 30, 0];
 
   // 게시글 5개 생성
   for (let i = 1; i <= 5; i++) {
@@ -26,6 +27,7 @@ async function main() {
       data: {
         title: `테스트 게시글 ${i}`,
         content: `테스트 게시글 ${i}의 내용입니다.`,
+        likeCount: articleLikeCounts[i - 1],
       },
     });
 

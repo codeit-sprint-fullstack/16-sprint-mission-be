@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Generated assistant tooling
+.agents/
+.claude/
+.cursor/
+.devin/

@@ -1,0 +1,75 @@
+@baseUrl = http://localhost:3000
+
+### 이미지가 있는 게시글 등록 (201)
+# @name createArticle
+POST {{baseUrl}}/articles
+Content-Type: application/json
+
+{
+  "title": "이미지 테스트 게시글",
+  "content": "게시글 이미지 저장 테스트입니다.",
+  "image": "https://example.com/article.png"
+}
+
+### 생성한 게시글 ID
+@articleId = {{createArticle.response.body.id}}
+
+### 상세 응답의 image 확인 (200)
+GET {{baseUrl}}/articles/{{articleId}}
+
+### 목록 응답의 image 확인 (200)
+GET {{baseUrl}}/articles
+
+### 이미지 변경 (200)
+PATCH {{baseUrl}}/articles/{{articleId}}
+Content-Type: application/json
+
+{
+  "image": "https://example.com/updated-article.png"
+}
+
+### 이미지를 생략하면 기존 이미지 유지 (200)
+PATCH {{baseUrl}}/articles/{{articleId}}
+Content-Type: application/json
+
+{
+  "title": "이미지를 유지한 게시글"
+}
+
+### null로 이미지 제거 (200)
+PATCH {{baseUrl}}/articles/{{articleId}}
+Content-Type: application/json
+
+{
+  "image": null
+}
+
+### 이미지 없이 등록 가능 (201, image: null)
+POST {{baseUrl}}/articles
+Content-Type: application/json
+
+{
+  "title": "이미지 없는 게시글",
+  "content": "이미지는 선택값입니다."
+}
+
+### 문자열이 아닌 이미지는 등록 거부 (400)
+POST {{baseUrl}}/articles
+Content-Type: application/json
+
+{
+  "title": "잘못된 이미지",
+  "content": "이미지 타입 검증",
+  "image": 123
+}
+
+### 빈 이미지 문자열은 수정 거부 (400)
+PATCH {{baseUrl}}/articles/{{articleId}}
+Content-Type: application/json
+
+{
+  "image": "   "
+}
+
+### 테스트 게시글 삭제 (200)
+DELETE {{baseUrl}}/articles/{{articleId}}
