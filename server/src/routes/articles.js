@@ -23,15 +23,22 @@ export function createArticleRouter(prisma) {
     const { offset, limit } = parsePagination(req.query);
     const keyword = parseKeyword(req.query.keyword);
     const sort = req.query.sort ?? "recent";
+    // 미션 7의 제목 검색을 지원하되 기존 제목+내용 검색은 기본값으로 유지합니다.
+    const searchBy = req.query.searchBy ?? "all";
+    if (typeof searchBy !== "string" || !["all", "title"].includes(searchBy)) {
+      throw new HttpError(400, "검색 범위를 확인해주세요.");
+    }
     if (typeof sort !== "string" || !Object.hasOwn(orderByMap, sort)) {
       throw new HttpError(400, "정렬 조건을 확인해주세요.");
     }
-    const where = keyword ? {
+    const where = !keyword ? {} : searchBy === "title" ? {
+      title: { contains: keyword, mode: "insensitive" },
+    } : {
       OR: [
         { title: { contains: keyword, mode: "insensitive" } },
         { content: { contains: keyword, mode: "insensitive" } },
       ],
-    } : {};
+    };
     const [articles, totalCount] = await Promise.all([
       prisma.article.findMany({ where, orderBy: orderByMap[sort], skip: offset, take: limit }),
       prisma.article.count({ where }),

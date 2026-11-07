@@ -1,7 +1,7 @@
 # Panda Market 백엔드
 
 Express 5, PostgreSQL, Prisma로 구현한 상품·게시글·댓글 API입니다.
-백엔드 명령어는 이 `server/` 폴더에서 실행합니다. 저장소 루트의 `src/`, `public/`, `package.json`은 별도 프론트엔드 프로젝트입니다.
+백엔드 명령어는 이 `server/` 폴더에서 실행합니다. 저장소 루트의 `app/`, `components/`, `public/`, `package.json`은 Next.js 프론트엔드에 해당합니다.
 
 ## 실행
 

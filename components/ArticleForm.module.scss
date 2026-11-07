@@ -1,0 +1,24 @@
+@use "../styles/variables" as *;
+
+.main { width: 100%; max-width: 1248px; margin: 0 auto; padding: 94px 24px 80px; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 42px; margin-bottom: 32px; }
+.header h1 { font-size: 20px; font-weight: 700; line-height: 32px; color: $gray-800; }
+.submit { min-width: 74px; height: 42px; padding: 8px 23px; border-radius: 8px; background: $primary; color: $white; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer; }
+.submit:disabled { background: $gray-400; cursor: default; }
+.fields { display: flex; flex-direction: column; gap: 24px; }
+.field { display: flex; flex-direction: column; gap: 12px; }
+.field label { font-size: 18px; font-weight: 700; line-height: 26px; color: $gray-800; }
+.field input, .field textarea { width: 100%; border: 0; border-radius: 12px; background: $gray-100; padding: 16px 24px; color: $gray-800; font: inherit; font-size: 16px; line-height: 26px; }
+.field input { height: 56px; }
+.field textarea { height: 282px; resize: vertical; min-height: 200px; }
+.field input::placeholder, .field textarea::placeholder { color: $gray-400; }
+.field input:focus-visible, .field textarea:focus-visible, .submit:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
+.error { color: #c0392b; margin-bottom: 16px; line-height: 24px; }
+
+@media (max-width: 743px) {
+  .main { padding: 86px 16px 60px; }
+  .header { margin-bottom: 24px; }
+  .fields { gap: 16px; }
+  .field label { font-size: 14px; line-height: 24px; }
+  .field textarea { height: 200px; }
+}

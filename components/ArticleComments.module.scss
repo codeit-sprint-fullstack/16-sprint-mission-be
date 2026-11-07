@@ -1,0 +1,58 @@
+@use "../styles/variables" as *;
+
+.section { margin-top: 32px; }
+.heading { font-size: 16px; font-weight: 600; line-height: 26px; color: $gray-900; }
+.composer { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; margin-top: 9px; }
+.composer textarea, .editInput { width: 100%; min-height: 80px; height: 104px; resize: vertical; padding: 16px 24px; border: 0; border-radius: 12px; background: $gray-100; color: $gray-800; font: inherit; font-size: 16px; line-height: 26px; }
+.composer textarea::placeholder { color: $gray-400; }
+.primary { flex-shrink: 0; height: 42px; padding: 8px 23px; border-radius: 8px; background: $primary; color: $gray-100; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer; }
+.primary:disabled { background: $gray-400; cursor: default; }
+.list { display: flex; flex-direction: column; gap: 24px; padding: 0; margin: 40px 0 0; list-style: none; }
+.item { min-width: 0; background: $bg-color; }
+.itemHeading { display: flex; align-items: flex-start; gap: 4px; margin-bottom: 24px; }
+.commentContent { flex: 1; min-width: 0; color: $gray-800; font-size: 14px; line-height: 24px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.author { display: flex; align-items: flex-start; gap: 8px; }
+.profile { position: relative; flex: 0 0 32px; height: 32px; overflow: hidden; }
+.profile img { position: absolute; left: 0; top: 0; }
+.profile .face { left: 4.83px; top: 4px; }
+.authorText { display: flex; flex-direction: column; gap: 4px; font-size: 12px; line-height: 18px; color: $gray-600; }
+.authorText time { color: $gray-400; }
+.divider { display: block; height: 1px; overflow: hidden; margin-top: 12px; }
+.menu { position: relative; flex: 0 0 24px; }
+.menu summary { position: relative; width: 24px; height: 24px; list-style: none; cursor: pointer; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary img { position: absolute; left: 11px; top: 5px; }
+.menuItems { position: absolute; right: 0; top: 32px; z-index: 2; width: 139px; border: 1px solid $gray-300; border-radius: 8px; background: $white; overflow: hidden; }
+.menuItems button { display: block; width: 100%; height: 46px; color: $gray-500; font: inherit; font-size: 16px; cursor: pointer; }
+.menuItems button:hover { background: $gray-50; }
+.editInput { display: block; height: 80px; font-size: 14px; line-height: 24px; }
+.editFooter { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 16px; }
+.editing .editFooter { min-height: 47px; }
+.editing .divider { margin-top: 23px; }
+.editActions { display: flex; align-items: center; gap: 4px; }
+.cancel { height: 42px; padding: 7px 20px; font: inherit; color: $gray-500; cursor: pointer; }
+.empty { margin-top: 32px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; color: $gray-400; font-size: 16px; line-height: 26px; }
+.emptyImage { position: relative; width: 140px; height: 140px; overflow: hidden; }
+.emptyImage img { position: absolute; }
+.bubbles { left: 20px; top: 20px; }
+.topDots { left: 55px; top: 42px; }
+.bottomDots { left: 73px; top: 90px; }
+.error { color: #c0392b; font-size: 14px; line-height: 24px; }
+.status { margin-top: 32px; text-align: center; color: $gray-500; }
+.more { display: block; margin: 24px auto 0; padding: 10px 20px; border: 1px solid $gray-200; border-radius: 8px; color: $gray-600; font: inherit; cursor: pointer; }
+.more:disabled, .cancel:disabled, .menuItems button:disabled { cursor: default; opacity: 0.6; }
+.composer textarea:focus-visible, .editInput:focus-visible, .primary:focus-visible, .cancel:focus-visible, .more:focus-visible, .menu summary:focus-visible, .menuItems button:focus-visible { outline: 2px solid $primary; outline-offset: 2px; }
+
+@media (max-width: 743px) {
+  .list { gap: 16px; margin-top: 24px; }
+  .divider { margin-top: 8px; }
+  .editFooter { margin-top: 12px; }
+  .editing .editFooter { min-height: 42px; }
+  .editing .divider { margin-top: 20px; }
+  .menuItems { width: 102px; }
+  .menuItems button { font-size: 14px; }
+}
+@media (max-width: 360px) {
+  .cancel { padding-inline: 12px; }
+  .editActions .primary { padding-inline: 14px; }
+}
