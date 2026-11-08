@@ -1,0 +1,125 @@
+@use "../styles/variables" as *;
+
+.header {
+  width: 100%;
+  background: $white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 100;
+
+  .headerInner {
+    height: 70px;
+    padding: 9px 200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-width: 0;
+  }
+
+  .pcLogo {
+    display: block;
+    width: 153px;
+
+    img {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+  }
+  .mobileLogo {
+    display: none;
+  }
+
+
+  .nav {
+    display: flex;
+    gap: 0;
+
+    a {
+      display: flex;
+      align-items: center;
+      height: 69px;
+      padding: 0 15px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 26px;
+      white-space: nowrap;
+      color: $gray-600;
+      text-decoration: none;
+    }
+    .active {
+      color: $primary;
+    }
+  }
+
+  .loginButton {
+    flex-shrink: 0;
+    width: 88px;
+    height: 42px;
+    padding: 0;
+    background: $primary;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $gray-100;
+    cursor: pointer;
+    font-size: 1rem;
+
+    &:focus-visible {
+      outline: 2px solid $primary;
+      outline-offset: 3px;
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .header{
+    .headerInner{
+      padding: 9px 24px;
+    }
+    .left { gap: 20px; }
+  }
+}
+@media (max-width: 743px){
+  .header{
+    .headerInner{
+      padding: 0 16px;
+      gap: 6px;
+    }
+    .pcLogo{
+      display: none;
+    }
+    .mobileLogo {
+      display: block ;
+      width: 81px;
+      height: auto;
+    }
+    
+    .left { gap: 16px; }
+    .nav { gap: 8px; }
+    .nav a { padding: 0; font-size: 16px; }
+  }
+
+}
+
+@media (max-width: 360px) {
+  .header {
+    .headerInner { gap: 4px; }
+    .mobileLogo { width: 72px; }
+    .left { gap: 8px; }
+    .nav { gap: 6px; }
+    .nav a { font-size: 14px; }
+    .loginButton { width: 72px; font-size: 14px; }
+  }
+}

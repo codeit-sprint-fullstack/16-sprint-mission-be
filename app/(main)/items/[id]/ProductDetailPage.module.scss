@@ -1,0 +1,10 @@
+.main {
+  max-width: 1200px;
+  min-height: calc(100vh - 160px);
+  margin: 0 auto;
+  padding: 110px 24px 60px;
+  line-height: 1.8;
+
+  h1 { font-size: 24px; font-weight: 700; }
+  a { display: inline-block; margin-top: 24px; color: #3692ff; }
+}

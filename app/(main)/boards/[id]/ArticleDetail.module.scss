@@ -1,0 +1,42 @@
+@use "../../../../styles/variables" as *;
+
+.main { width: 100%; max-width: 1248px; margin: 0 auto; padding: 102px 24px 80px; }
+.heading { display: flex; align-items: flex-start; gap: 8px; }
+.heading h1 { flex: 1; min-width: 0; font-size: 20px; font-weight: 700; line-height: 32px; color: $gray-800; overflow-wrap: anywhere; }
+.menu { position: relative; flex: 0 0 24px; }
+.menu summary { position: relative; width: 24px; height: 24px; list-style: none; cursor: pointer; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary img { position: absolute; left: 11px; top: 5px; }
+.menuItems { position: absolute; right: 0; top: 32px; width: 139px; border: 1px solid $gray-300; border-radius: 8px; background: $white; z-index: 1; overflow: hidden; }
+.menuItems > a, .menuItems > button { display: block; width: 100%; min-height: 46px; padding: 10px 16px; color: $gray-500; text-align: center; font: inherit; font-size: 16px; cursor: pointer; }
+.menuItems > a:hover, .menuItems > button:hover { background: $gray-50; }
+.meta { display: flex; align-items: center; gap: 32px; margin-top: 16px; }
+.identity { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.profile { position: relative; flex: 0 0 40px; width: 40px; height: 40px; overflow: hidden; }
+.profile img { position: absolute; left: 0; top: 0; }
+.profile .face { left: 6.04px; top: 5px; }
+.authorText { display: flex; gap: 8px; color: $gray-600; font-size: 14px; line-height: 24px; white-space: nowrap; }
+.authorText time { color: $gray-400; }
+.stats { display: flex; align-items: center; gap: 32px; }
+.likes { display: inline-flex; align-items: center; gap: 4px; height: 40px; border: 1px solid $gray-200; border-radius: 35px; padding: 3px 12px; color: $gray-500; font-size: 16px; line-height: 26px; }
+.likes picture { display: block; }
+.divider { display: block; height: 1px; overflow: hidden; margin-top: 16px; }
+.content { margin-top: 24px; font-size: 18px; line-height: 26px; color: $gray-800; white-space: pre-wrap; overflow-wrap: anywhere; }
+.back { display: flex; align-items: center; justify-content: center; gap: 8px; width: 240px; height: 48px; margin: 64px auto 0; border-radius: 40px; background: $primary; color: $gray-100; font-size: 18px; font-weight: 600; line-height: 26px; }
+.backIcon { position: relative; flex: 0 0 24px; height: 24px; }
+.backIcon img { position: absolute; left: 2.5px; top: 3.6px; }
+.back:focus-visible, .menu summary:focus-visible, .menuItems a:focus-visible { outline: 2px solid $primary; outline-offset: 3px; }
+
+@media (max-width: 743px) {
+  .main { padding: 94px 16px 60px; }
+  .menuItems { width: 102px; }
+  .menuItems > a, .menuItems > button { font-size: 14px; }
+  .meta, .stats { gap: 16px; }
+  .authorText { gap: 2px; }
+  .likes { height: 32px; }
+  .content { margin-top: 16px; font-size: 16px; }
+  .back { margin-top: 40px; }
+}
+@media (max-width: 360px) {
+  .authorText { flex-direction: column; gap: 0; }
+}
