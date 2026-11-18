@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000
+
+### 기본 정렬: 최신순 (200)
+GET {{baseUrl}}/articles
+
+### 최신순 명시 (200)
+GET {{baseUrl}}/articles?sort=recent
+
+### 좋아요순 (200)
+# likeCount 내림차순, 동률이면 createdAt 내림차순, 다시 동률이면 id 내림차순
+# seed 데이터에는 서로 다른 좋아요 수와 동률인 게시글이 포함됩니다.
+GET {{baseUrl}}/articles?sort=like
+
+### 좋아요순 + 검색 + 페이지네이션 (200)
+GET {{baseUrl}}/articles?sort=like&keyword=테스트&offset=0&limit=2
+
+### 좋아요순 다음 페이지 (200)
+GET {{baseUrl}}/articles?sort=like&keyword=테스트&offset=2&limit=2
+
+### 지원하지 않는 정렬 (400)
+GET {{baseUrl}}/articles?sort=popular
+
+### 빈 정렬 값 (400)
+GET {{baseUrl}}/articles?sort=
+
+### 상속된 객체 속성 이름도 거부 (400)
+GET {{baseUrl}}/articles?sort=constructor
+
+### 정렬 값을 여러 개 보내면 거부 (400)
+GET {{baseUrl}}/articles?sort=recent&sort=like

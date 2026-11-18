@@ -1,0 +1,37 @@
+@use "../../../styles/variables" as *;
+
+.page { display: flex; flex-direction: column; min-height: calc(100vh - 160px); }
+.main { flex: 1; width: 100%; max-width: 1248px; margin: 0 auto; padding: 94px 24px 80px; }
+.heading { margin: 0; font-size: 20px; font-weight: 700; line-height: 32px; color: $gray-800; }
+.bestSection { margin-bottom: 40px; }
+.bestGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 16px; }
+.sectionHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.writeButton { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 88px; height: 42px; border-radius: 8px; background: $primary; color: $white; font-size: 16px; font-weight: 600; }
+.toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.toolbar > :first-child { flex: 1; min-width: 0; }
+.toolbar > :last-child { flex-shrink: 0; }
+.toolbar input { font: inherit; font-size: 16px; }
+.toolbar button { height: 42px; font-size: 16px; }
+.toolbar .sort img { width: 24px; height: 24px; }
+.toolbar .sort > button { border-radius: 12px; }
+.list { display: flex; flex-direction: column; gap: 24px; list-style: none; padding: 0; margin: 0; }
+.empty { min-height: 120px; display: grid; place-items: center; padding: 24px; color: $gray-500; text-align: center; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.writeButton:focus-visible { outline: 2px solid $primary; outline-offset: 4px; }
+
+@media (max-width: 1199px) {
+  .bestSection { margin-bottom: 24px; }
+  .bestGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+  .bestGrid > :nth-child(n + 3) { display: none; }
+  .sectionHeader { margin-bottom: 48px; }
+  .toolbar { gap: 6px; margin-bottom: 40px; }
+}
+@media (max-width: 743px) {
+  .main { padding: 86px 16px 80px; }
+  .heading { font-size: 18px; line-height: 26px; }
+  .bestGrid { grid-template-columns: minmax(0, 1fr); }
+  .bestGrid > :nth-child(n + 2) { display: none; }
+  .sectionHeader { margin-bottom: 16px; }
+  .toolbar { gap: 13px; margin-bottom: 16px; }
+  .toolbar input { font-size: 16px; }
+}

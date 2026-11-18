@@ -1,0 +1,75 @@
+@use "../styles/variables" as *;
+
+.link { display: block; min-width: 0; }
+.content { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.title {
+  flex: 1;
+  min-width: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+  color: $gray-800;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.thumbnail {
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  background: $white;
+  border: 1px solid $gray-100;
+  border-radius: 8px;
+  overflow: hidden;
+
+  img { object-fit: contain; }
+}
+.meta { display: flex; align-items: center; gap: 8px; margin-top: 16px; min-height: 24px; font-size: 14px; line-height: 24px; }
+.author { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: $gray-600; }
+.date { color: $gray-400; white-space: nowrap; }
+.likes { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; color: $gray-500; font-size: 16px; line-height: 26px; white-space: nowrap; }
+.profile {
+  position: relative;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+
+  img { position: absolute; left: 0; top: 0; }
+  .face { left: 3.62px; top: 3px; }
+}
+.row { background: $bg-color; }
+.divider { display: block; overflow: hidden; height: 1px; margin-top: 23px; }
+.bestCard {
+  min-width: 0;
+  background: $gray-50;
+  border-radius: 8px;
+  padding: 0 24px 11px;
+
+  .badge { display: flex; width: 102px; height: 30px; align-items: center; justify-content: center; gap: 4px; background: $primary; color: $white; border-radius: 0 0 16px 16px; font-size: 16px; font-weight: 600; }
+  .content { margin-top: 16px; }
+  .thumbnail { border-color: $gray-200; border-radius: 6px; }
+  .meta { margin-top: 16px; gap: 8px; }
+  .likes { order: 1; margin-left: 0; gap: 4px; font-size: 14px; line-height: 24px; }
+  .date { order: 2; margin-left: auto; }
+}
+.link:focus-visible { outline: 2px solid $primary; outline-offset: 4px; border-radius: 8px; }
+
+@media (max-width: 1199px) {
+  .bestCard {
+    padding-bottom: 16px;
+    .title { font-size: 18px; line-height: 26px; -webkit-line-clamp: 3; }
+    .meta { margin-top: 40px; }
+  }
+}
+@media (max-width: 743px) {
+  .title { font-size: 18px; line-height: 26px; }
+  .meta { gap: 6px; }
+  .author { gap: 6px; }
+  .likes { gap: 4px; }
+  .bestCard .meta { gap: 8px; }
+}
