@@ -1,7 +1,9 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
-import postsRouter from './routes/products.js';
+import productsRouter from './routes/products.js';
+import articlesRouter from './routes/articles.js';
+import commentsRouter from './routes/comments.js';
+import { HttpError } from './errors.js';
 
 const app = express();
 
@@ -9,14 +11,15 @@ app.use(cors({origin: process.env.CORS_ORIGIN}));
 app.use(express.json());
 
 const PORT = process.env.PORT ?? 3000;
-await mongoose.connect(process.env.MONGO_URL);
 
 // 서버 조회
 app.get('/', (req, res) => {
   res.send('판다마켓 서버가 실행 중입니다.');
 });
 
-app.use('/api/products', postsRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/articles', articlesRouter);
+app.use('/api/comments', commentsRouter);
 
 // 에러 처리
 app.use((req, res) => {
@@ -41,6 +44,11 @@ app.use((err, req, res, next) => {
     }
 
     res.status(400).json({message: err.errors[field].message});
+    return;
+  }
+
+  if (err instanceof HttpError) {
+    res.status(err.status).json({ message: err.message });
     return;
   }
 

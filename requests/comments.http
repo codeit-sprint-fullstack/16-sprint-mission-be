@@ -1,0 +1,47 @@
+# 변수 선언
+@localUrl = http://localhost:3000/api/comments
+@deployUrl = https://pandamarket-uav8.onrender.com/api/comments
+@baseUrl = {{localUrl}}
+
+### 서버 조회
+GET http://localhost:3000
+
+### 댓글 목록 조회
+# @name comments
+GET {{baseUrl}}?resource=product&id=100&page=1&pageSize=5
+
+### 댓글 목록 조회 - 커서
+# @name comments
+GET {{baseUrl}}?resource=product&id=100&page=1&pageSize=5&cursor=110
+
+### 댓글 등록 - 상품
+# @name created
+POST {{baseUrl}}?resource=product&id=100
+Content-Type: application/json
+{
+  "content": "상품에 댓글 등록 완료"
+}
+
+### 댓글 등록 - 게시글
+# @name created
+POST {{baseUrl}}?resource=article&id=20
+Content-Type: application/json
+{
+  "content": "게시글에 댓글 등록 완료"
+}
+
+### 등록한 댓글 조회
+GET {{baseUrl}}/{{created.id}}
+
+### 댓글 수정
+PATCH {{baseUrl}}/121
+Content-Type: application/json
+{
+  "content": "댓글 수정했습니다."
+}
+
+### 수정한 댓글 조회
+GET {{baseUrl}}/{{created.id}}
+
+### 댓글 삭제
+DELETE {{baseUrl}}/121

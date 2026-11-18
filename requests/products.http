@@ -1,0 +1,55 @@
+# 변수 선언
+@localUrl = http://localhost:3000/api/products
+@deployUrl = https://pandamarket-uav8.onrender.com/api/products
+@baseUrl = {{localUrl}}
+
+### 서버 조회
+GET http://localhost:3000
+
+### 상품 목록 조회
+# @name products
+GET {{baseUrl}}
+
+### 상품 목록 조회 - 페이지 변경
+GET {{baseUrl}}?page=2
+
+### 상품 목록 조회 - 페이지 사이즈 변경
+GET {{baseUrl}}?pageSize=5
+
+### 상품 목록 조회 - 키워드 검색
+GET {{baseUrl}}?keyword=아이폰
+
+### 상품 상세 조회
+GET {{baseUrl}}/{{products.list[0].id}}
+
+### 상품 등록
+# @name created
+POST {{baseUrl}}
+Content-Type: application/json
+{
+  "name": "상품",
+  "description": "상품 설명입니다. 앞뒤 공백 제외하고 10글자 이상 적어야 해요.",
+  "price": 0,
+  "tags": [
+    "태그1",
+    "태그2"
+  ]
+}
+
+### 등록한 상품 조회
+GET {{baseUrl}}/{{created.id}}
+
+### 상품 수정
+PATCH {{baseUrl}}/{{created.id}}
+Content-Type: application/json
+{
+  "name": "상품 수정2",
+  "description": "상품 설명 수정입니다. 앞뒤 공백 제외하고 10글자 이상 적어야 해요.",
+  "price": 10000
+}
+
+### 수정한 상품 조회
+GET {{baseUrl}}/{{created.id}}
+
+### 상품 삭제
+DELETE {{baseUrl}}/{{created.id}}
